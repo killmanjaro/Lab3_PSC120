@@ -62,9 +62,26 @@ public class Agent implements Steppable {
 	 */
 
 	public Agent findLocalDate(Environment state) {
-		Bag neighbors ; //TODO: Get the local neighbors
+		Bag neighbors = state.sparseSpace.getMooreNeighbors(x, y, state.dateSearchRadius, state.sparseSpace.TOROIDAL, true);
 		// draw agents randomly from the neighbors bag if it is not empty.  If an agent is of the opposite sex and not dated, then
 		//return it.
+		if (neighbors.numObjs > 0) {
+			for(int i=0;i<neighbors.numObjs;i++) {
+				Agent a = (Agent)neighbors.objs[i];
+				// check if opposite sex/ not dated
+				if (female ) {
+					// if a is a male
+					if (a.female == false) {
+						return a;
+					}
+				}
+				else {
+					if (a.female == true ) {
+						return a;
+					}
+				}
+			}
+		}
 		return null; //a place holder for when you will return an agent that has not dated or null if none can be found or all of dated
 	}
 	public void replicate (Environment state, boolean gender){
