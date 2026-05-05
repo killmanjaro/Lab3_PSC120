@@ -72,14 +72,14 @@ public class Agent implements Steppable {
 				if (female ) {
 					// if a is a male
 					if (a.female == false) {
-						if (dated = false) {
+						if (dated == false) {
 							return a;
 						}
 					}
 				}	
 				else {
 					if (a.female == true ) {
-						if (dated = false) {
+						if (dated == false) {
 							return a;
 						}
 					}
