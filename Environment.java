@@ -31,7 +31,8 @@ public class Environment extends SimStateSweep {
     Bag nextMale = new Bag();//population of males for next step 
     Bag nextFemale = new Bag();
     public Experimenter experimenter = null;
-	public int dateSearchRadius = 1;
+	// our parameters
+	public int dateSearchRadius = 1;//search radius for agents
     
 	
     public Environment(long seed, Class observer) {
