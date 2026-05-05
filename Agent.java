@@ -249,20 +249,17 @@ public class Agent implements Steppable {
 	 * @param state
 	 */
 	public void date(Environment state) {
-		Agent a = findDate(state);
-		if(a != null)
-			date(state, a);
-		//TODO: replace the above code with an if than conditional
-		//of the form:
-		//if(state.nonSpatialModel) {
-		//  Agent a = findDate(state);
-		//  if(a != null)
-		//	  date(state, a);
-		//	}
-		//}
-		//else {
-		//	Similar to the above using findLocalDate
-		//}
+		//switch between spatial & non-spatial model
+		if(state.nonSpatialModel) {
+			Agent a = findDate(state); //non-spatial (aka original) model uses findDate
+	        if(a != null)
+	            date(state, a);
+		}
+        else {
+        	Agent a = findLocalDate(state); //spatial model uses findLocalDate
+	        if(a != null)
+	            date(state, a);
+        }
 	}
 
 	public void placeAgent(Environment state) {
