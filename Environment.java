@@ -12,7 +12,8 @@ public class Environment extends SimStateSweep {
 	public boolean oneCellPerAgent = false;//controls whether agents can occupy the same place or not
 	public double aggregate = 0.0;//probability of aggregating
 	public int searchRadius = 2;// the radius or view of an agent when aggregating
-
+	public int dateSearchRadius = 1;//search radius for agents
+	
 	/*
 	 * KH Model parameters
 	 */
@@ -30,9 +31,7 @@ public class Environment extends SimStateSweep {
     Bag female = new Bag();//the current population of females
     Bag nextMale = new Bag();//population of males for next step 
     Bag nextFemale = new Bag();
-    public Experimenter experimenter = null;
-	// our parameters
-	public int dateSearchRadius = 1;//search radius for agents
+    public Experimenter experimenter = null;	
     
 	
     public Environment(long seed, Class observer) {
