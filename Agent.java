@@ -72,16 +72,21 @@ public class Agent implements Steppable {
 				if (female ) {
 					// if a is a male
 					if (a.female == false) {
-						return a;
+						if (dated = false) {
+							return a;
+						}
 					}
-				}
+				}	
 				else {
 					if (a.female == true ) {
-						return a;
+						if (dated = false) {
+							return a;
+						}
 					}
 				}
 			}
 		}
+		neighbors.shuffle(state.random); //randomize bag after drawing agent a
 		return null; //a place holder for when you will return an agent that has not dated or null if none can be found or all of dated
 	}
 	public void replicate (Environment state, boolean gender){
