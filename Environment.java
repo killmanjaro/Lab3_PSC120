@@ -12,7 +12,7 @@ public class Environment extends SimStateSweep {
 	public boolean oneCellPerAgent = false;//controls whether agents can occupy the same place or not
 	public double aggregate = 0.0;//probability of aggregating
 	public int searchRadius = 2;// the radius or view of an agent when aggregating
-	public int dateSearchRadius = 1;//search radius for agents
+	public int dateSearchRadius = 1;//the radius of an agent to draw dates from
 	
 	/*
 	 * KH Model parameters
@@ -158,6 +158,14 @@ public class Environment extends SimStateSweep {
 
 	public void setSearchRadius(int searchRadius) {
 		this.searchRadius = searchRadius;
+	}
+
+	public int getDateSearchRadius() {
+		return dateSearchRadius;
+	}
+
+	public void setDateSearchRadius(int dateSearchRadius) {
+		this.dateSearchRadius = dateSearchRadius;
 	}
 
 	/**
