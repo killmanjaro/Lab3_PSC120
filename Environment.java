@@ -17,9 +17,10 @@ public class Environment extends SimStateSweep {
 	/*
 	 * KH Model parameters
 	 */
-	//TODO: declare a boolean variable nonSpatialModel with a getter-setter pair
-	//TODO:also a double maxFrustration variable with a getter-setter pair and set it to 50
-	//TODO: an int dateSearchRadius with a getter-setter pair
+	public boolean nonSpatialModel = true; //true = original non-spatial model; false = spatial local dating
+	public double maxFrustration = 50;     //max frustration value (rate of switching from p1 to p2)
+	public boolean replacement = false;    //when true, paired agents are replaced by new ones
+
 	public int males = 1000;//size of the population of males
     public int females = 1000;
     public double maxAttractiveness = 10.0;//maximum attractiveness
@@ -48,8 +49,16 @@ public class Environment extends SimStateSweep {
     	nextFemale.clear();
     }
 
-	//TODO: getters and setters for new variable
+	//Getters and setters for new variables
 
+	public boolean isNonSpatialModel() { return nonSpatialModel; }
+	public void setNonSpatialModel(boolean nonSpatialModel) { this.nonSpatialModel = nonSpatialModel; }
+
+	public double getMaxFrustration() { return maxFrustration; }
+	public void setMaxFrustration(double maxFrustration) { this.maxFrustration = maxFrustration; }
+
+	public boolean isReplacement() { return replacement; }
+	public void setReplacement(boolean replacement) { this.replacement = replacement; }
 
 	public int getMales() {
 		return males;
@@ -179,11 +188,6 @@ public class Environment extends SimStateSweep {
 			}
 				
 		}
-		//TODO: Almost the same as the makeAgentNonSpatial below except you will use the 
-		//constructor: Agent(int x, int y, int dirx, int diry, boolean female, double attractiveness)
-		//don't forget xdir and ydir
-		//Hint: look at the code-along lab for generating xdir and ydir
-		
 		for(int i=0;i<females;i++) {
 			int x = random.nextInt(gridWidth);
 			int y = random.nextInt(gridHeight);
@@ -195,8 +199,11 @@ public class Environment extends SimStateSweep {
 					b = sparseSpace.getObjectsAtLocation(x, y);
 				}
 			}
+			//generate random direction components: -1, 0, or 1
+			int dirx = random.nextInt(3) - 1;
+			int diry = random.nextInt(3) - 1;
 			double attractiveness = random.nextInt((int)maxAttractiveness)+1;
-			Agent f = new Agent(x, y, true,attractiveness);
+			Agent f = new Agent(x, y, dirx, diry, true, attractiveness); //use full spatial constructor
 			f.event = schedule.scheduleRepeating(f);
 			sparseSpace.setObjectLocation(f,x, y);
 			gui.setOvalPortrayal2DColor(f, (float)1, (float)0, (float)0, (float)(attractiveness/maxAttractiveness));
@@ -213,8 +220,11 @@ public class Environment extends SimStateSweep {
 					b = sparseSpace.getObjectsAtLocation(x, y);
 				}
 			}
+			//generate random direction components: -1, 0, or 1
+			int dirx = random.nextInt(3) - 1;
+			int diry = random.nextInt(3) - 1;
 			double attractiveness = random.nextInt((int)maxAttractiveness)+1;
-			Agent m = new Agent(x, y, false,attractiveness);
+			Agent m = new Agent(x, y, dirx, diry, false, attractiveness); //use full spatial constructor
 			m.event = schedule.scheduleRepeating(m);
 			sparseSpace.setObjectLocation(m,x, y);
 			gui.setOvalPortrayal2DColor(m, (float)0, (float)0, (float)1, (float)(attractiveness/maxAttractiveness));
