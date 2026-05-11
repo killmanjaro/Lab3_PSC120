@@ -56,7 +56,7 @@ public class Experimenter extends Observer {
 	public void printData(Environment state) {
 		int percent = (int)((n/(double)state.females)*100.0);
 		if(n>1) {
-			System.out.println(state.schedule.getSteps()+1 +"      "+percent+"      "+correlation() + "     "+(sX+sY)/(2*n));
+			//System.out.println(state.schedule.getSteps()+1 +"      "+percent+"      "+correlation() + "     "+(sX+sY)/(2*n));
 		}
 	}
 
@@ -89,17 +89,46 @@ public class Experimenter extends Observer {
 	}
 
 	public void step(SimState state) {
-		super.step(state);
-		Environment environment = (Environment)state;
-		stop(environment);
-
-		if(state.schedule.getSteps() ==0) {
-			System.out.println();//create a return
-			System.out.println("step    %          r       attractiveness");
-			printData(environment);
-		}
-		else
-			printData(environment);
-		populations(environment);
+	    super.step(state);
+	    Environment environment = (Environment) state;
+	    stop(environment);
+	    populations(environment);
+	    if(step % this.state.dataSamplingInterval == 0) {
+	        pairCorrelation(environment);
+	        attractiveness(environment);
+	        attractivenessDistribution(environment);
+	    }
+	}
+	
+	public void pairCorrelation(Environment state) {
+	    double time = (double)state.schedule.getTime();//get the current time
+	    this.upDateTimeChart(0,time, correlation(), true, 1000);//update chart #0 with up to a 1000 milisecond delay
+	}
+	
+	public void attractiveness(Environment state) {
+	    double time = (double) state.schedule.getTime();
+	    if(n > 0) {
+	        double mean = (sX + sY) / (2.0 * n);
+	        this.upDateTimeChart(1, time, mean, true, 1000);
+	    }
+	}
+	
+	public void attractivenessDistribution(Environment state) {
+	    Bag agents = state.sparseSpace.allObjects;
+	    double[] data = new double[agents.numObjs];
+	    for(int i = 0; i < data.length; i++) {
+	        Agent a = (Agent) agents.objs[i];
+	        // Store attractiveness score
+	        data[i] = a.attractiveness;
+	    }
+	    if(agents.numObjs > 0) {
+	        this.upDateHistogramChart(
+	            0,
+	            (int) state.schedule.getSteps(),
+	            data,
+	            10
+	        );
+	    }
 	}
 }
+
